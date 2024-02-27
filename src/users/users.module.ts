@@ -14,5 +14,6 @@ import { RolesModule } from 'src/roles/roles.module';
   providers: [UsersService],
   //подключение модуля юзер для взаимодействия с этой моделью
   imports: [SequelizeModule.forFeature([User, Role, UserRoles]), RolesModule],
+  exports: [UsersService],
 })
 export class UsersModule {}

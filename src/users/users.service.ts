@@ -8,7 +8,9 @@ import { RolesService } from 'src/roles/roles.service';
 export class UsersService {
   //импортируем для того, чтобы работать с моделью юзера для создания строк в бд
   constructor(
+    //импортируется модель юзера для манипуляций с этой таблицей в бд
     @InjectModel(User) private userRepository: typeof User,
+    //импортируется сервис ролей для работы с функциями ролей
     private roleService: RolesService
   ) {}
 
@@ -21,11 +23,22 @@ export class UsersService {
 
     //с помощью функции set обновляем в бд значение roles для юзера
     await user.$set('roles', [Number(role.id)]);
+
+    user.roles = [role]
+
     return user;
   }
   async getAllUsers() {
     //возвращаем всех юзеров и + к каждому озвращаем все поля, с которыми связан юзер.
     const users = await this.userRepository.findAll({ include: { all: true } });
     return users;
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email },
+      include: { all: true },
+    });
+    return user
   }
 }
