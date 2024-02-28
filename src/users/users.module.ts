@@ -7,6 +7,7 @@ import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
 import { RolesModule } from 'src/roles/roles.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { Post } from 'src/posts/posts.model';
 
 @Module({
   //подключение контроллеров для работы с http запросами
@@ -15,7 +16,7 @@ import { AuthModule } from 'src/auth/auth.module';
   providers: [UsersService],
   //подключение модуля юзер для взаимодействия с этой моделью
   imports: [
-    SequelizeModule.forFeature([User, Role, UserRoles]),
+    SequelizeModule.forFeature([User, Role, UserRoles,Post]),
     RolesModule,
     forwardRef(() => AuthModule),
   ],

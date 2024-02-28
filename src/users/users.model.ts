@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsToMany,
+  Column,
+  DataType,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Post } from 'src/posts/posts.model';
 import { Role } from 'src/roles/roles.model';
 import { UserRoles } from 'src/roles/user-roles.model';
 
@@ -11,7 +19,6 @@ interface userCreatinAtttrs {
 
 @Table({ tableName: 'users' })
 export class User extends Model<User, userCreatinAtttrs> {
-
   //описание атрибута баззы данных с примером будущего картежа
   @ApiProperty({ example: '1', description: 'uniq id' })
   @Column({
@@ -51,7 +58,9 @@ export class User extends Model<User, userCreatinAtttrs> {
   })
   banReason: string;
 
+  @BelongsToMany(() => Role, () => UserRoles)
+  roles: Role[];
 
-  @BelongsToMany(()=>Role,()=>UserRoles)
-  roles:Role[];
+  @HasMany(() => Post)
+  posts: Post[];
 }

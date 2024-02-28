@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -7,6 +14,7 @@ import { JwtAuthGuard } from 'src/auth/jsw-auth.guard';
 import { Roles } from 'src/auth/role-auth.decorator';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
+import { ValidationPipe } from 'src/pipes/validation.pipe';
 
 //позволяет разделять эндпоинты по подтипам
 @ApiTags('users')
@@ -17,6 +25,7 @@ export class UsersController {
   //описание эндпоинта
   @ApiOperation({ summary: 'user creation' })
   //описание типа возвращаемой информации
+  @UsePipes(ValidationPipe)
   @ApiResponse({ status: 200, type: User })
   @Post() //запрос типа post
   create(@Body() userDto: CreateUserDto) {
